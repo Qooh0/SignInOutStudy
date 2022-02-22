@@ -1,5 +1,12 @@
-var builder = WebApplication.CreateBuilder(args);
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using SignInOutStudy.Data;
+using SignInOutStudy.Areas.Identity.Data;   // ‚±‚±Žè“®‚Å’Ç‰Á‚µ‚½
 
+var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("SignInOutStudyContextConnection");builder.Services.AddDbContext<SignInOutStudyContext>(options =>
+    options.UseSqlServer(connectionString));builder.Services.AddDefaultIdentity<SignInOutStudyUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<SignInOutStudyContext>();
 // Add services to the container.
 builder.Services.AddRazorPages();
 
@@ -17,7 +24,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
